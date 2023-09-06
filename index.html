@@ -1,0 +1,86 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+body {
+  padding: 50px;
+  background-size: 10%;
+}
+img {
+  height: 400px;
+}
+* {
+  font-size: 30px;
+}
+  </style>
+  <h1>180 Project 1</h1>
+  
+  CS 180 Project Report 1 - Yashish Mohnot
+  <br>
+  The project is to align the RGB digitized glass plates to form a color image.
+  <br>
+  <br>
+  Approach:
+  <ol>
+    <li>Shifting - I shifted the images using the np.roll function. I let the images roll over, since I was dealing with the edges later.</li>
+    <li>Scoring - I used the NCC function to score. One thing I realized was that the borders of the image (the black and white portions) were having a significant effect on the NCC of the image. To combat this, I blacked out 6% of the image on all 4 sides before performing NCC. This blacked out portion of the image ended up having no effect on the NCC, which is what I desired.</li>
+    <li>Alligning - I used the pyramid method to allign the images. I started with a minimum resolution of 200, and was checking shifting 50 to the left and the right. I then doubled the resolution till I reached my original resolution, At every step, I only checked the allignment score at indices suitable to the ouput of the previous iteration of the pyramind method.</li>
+    <li>[Bells and Whistles] Autocrop - To autocrop, I set 2 thresholds -> mean_intensity + 1*sd_intensity and mean_intensity - 1*sd_intensity. I then went through all 4 edges of the image and only removed a row/column if every cell in the column had one of the rgb values outside these thresholds. This would indicate that that row/column is too dark / too light in some of the colors, which would make me want to crop it.</li>
+    <li>[Bells and Whistles] Autocotrast - I scaled the intensities linearly to be between 0 and 1</li>
+  </ol>
+  <br>
+  This is my results on all the images (and a few images of my choosing) BEFORE autocontrast and autocrop, with the offsets calculated (in the form (green_x, green_y), (red_x, red_y))
+
+  <ol>
+    <li><img src="./output/V1/cathedral.jpg"/> <br> Offset = (2,5), (4, 12)</li>
+    <li><img src="./output/V1/church.jpg"/> <br> Offset = (8,32), (0, 64)</li>
+    <li><img src="./output/V1/emir.jpg"/> <br> Offset = (32, 50), (48, 103)</li>
+    <li><img src="./output/V1/harvesters.jpg"/> <br> Offset = (32, 64), (32, 128)</li>
+    <li><img src="./output/V1/icon.jpg"/> <br> Offset = (18, 48), (32, 96)</li>
+    <li><img src="./output/V1/lady.jpg"/> <br> Offset = (8, 64), (16, 112)</li>
+    <li><img src="./output/V1/melons.jpg"/> <br> Offset = (16, 96), (16, 192)</li>
+    <li><img src="./output/V1/monastery.jpg"/> <br> Offset = (2, -3), (2, 3)</li>
+    <li><img src="./output/V1/onion_church.jpg"/> <br> Offset = (32, 64), (40, 112)</li>
+    <li><img src="./output/V1/sculpture.jpg"/><br> Offset = (0, 34), (-24, 144)</li>
+    <li><img src="./output/V1/self_portrait.jpg"/><br> Offset = (28, 96), (36, 192)</li>
+    <li><img src="./output/V1/three_generations.jpg"/><br> Offset = (16, 64), (16, 128)</li>
+    <li><img src="./output/V1/tobolsk.jpg"/><br> Offset = (3, 3), (4, 7)</li>
+    <li><img src="./output/V1/train.jpg"/><br> Offset = (8, 48), (33, 96)</li>
+    <li><img src="./output/V1/extra_1.jpg"/><br> Offset = (8, 64), (16, 128)</li>
+    <li><img src="./output/V1/extra_2.jpg"/><br> Offset = (4, 36), (8, 98)</li>
+    <li><img src="./output/V1/extra_3.jpg"/><br> Offset = (16, -16), (32, 16)</li>
+  </ol>
+
+  <br>
+  This is my results on all the images (and a few images of my choosing) AFTER autocontrast and autocrop
+
+  <ol>
+    <li><img src="./output/cathedral.jpg"/></li>
+    <li><img src="./output/church.jpg"/></li>
+    <li><img src="./output/emir.jpg"/></li>
+    <li><img src="./output/harvesters.jpg"/></li>
+    <li><img src="./output/icon.jpg"/> <br></li>
+    <li><img src="./output/lady.jpg"/> <br></li>
+    <li><img src="./output/melons.jpg"/> <br></li>
+    <li><img src="./output/monastery.jpg"/> <br></li>
+    <li><img src="./output/onion_church.jpg"/> <br></li>
+    <li><img src="./output/sculpture.jpg"/><br></li>
+    <li><img src="./output/self_portrait.jpg"/><br></li>
+    <li><img src="./output/three_generations.jpg"/><br></li>
+    <li><img src="./output/tobolsk.jpg"/><br></li>
+    <li><img src="./output/train.jpg"/><br></li>
+    <li><img src="./output/extra_1.jpg"/><br></li>
+    <li><img src="./output/extra_2.jpg"/><br></li>
+    <li><img src="./output/extra_3.jpg"/><br></li>
+  </ol>
+
+  <br>
+  As we can see the autocrop does a really good job ob almost always cropping off the borders, while the autocontrast makes the image look (slightly) more crisp
+
+</body>
+</html>
